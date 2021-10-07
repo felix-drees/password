@@ -13,7 +13,6 @@ def is_valid_input(min_pw_len: int, max_pw_len: int, pw_chars: Union[str, list[s
     """ validate the input for the below functions """
 
     # CHECK TYPE
-
     if not isinstance(min_pw_len and max_pw_len, int) or not hasattr(pw_chars, '__iter__'):
         raise TypeError('invalid type for pw len or pw charset')
 
@@ -21,7 +20,6 @@ def is_valid_input(min_pw_len: int, max_pw_len: int, pw_chars: Union[str, list[s
         raise TypeError('pw charset dose NOT only contains characters')
 
     # CHECK VALUE
-
     if min_pw_len < 1 or len(pw_chars) < 1:
         raise ValueError('invalid value for pw len or pw charset')
 
@@ -35,10 +33,6 @@ def password_creator(pw_len: int = 40, pw_chars: Union[str, list[str]] = DEFAULT
     """
     this function generates a password,
     which was created with the highest cryptographic randomness of the operating system
-
-    :param pw_len: the desired password length
-    :param pw_chars: the desired / allowed characters for creating the password
-    :return: the created password
     """
     """ class secrets.SystemRandom
     A class for generating random numbers using the highest-quality sources provided by the operating system. 
@@ -55,11 +49,6 @@ def generate_all_password_combinations(min_pw_len: int = 4, max_pw_len: int = 5,
     """
     a generator function that generates all possible variations of the selected characters with repetition
     to create passwords of different lengths
-
-    :param min_pw_len: minimum password length
-    :param max_pw_len: maximum password length
-    :param pw_chars: the desired / allowed characters for creating the password
-    :return: all possible passwords
     """
 
     if not is_valid_input(min_pw_len=min_pw_len, max_pw_len=max_pw_len, pw_chars=pw_chars):
@@ -70,15 +59,21 @@ def generate_all_password_combinations(min_pw_len: int = 4, max_pw_len: int = 5,
             yield ''.join(password)
 
 
-def calculate_all_possible_password_combinations(min_pw_len: int, max_pw_len: int, pw_chars: Union[str, list[str]]) -> int:
-    """
-    calculates the power of the key space
+def dictionary_attack(dict_file_name: str = 'rockyou.txt') -> str:
+    """ yield/return the passwords contained in the given dict password file """
 
-    :param min_pw_len: minimum password length
-    :param max_pw_len: maximum password length
-    :param pw_chars: the desired / allowed characters for creating the password
-    :return: the power of the key space
-    """
+    try:
+        with open(dict_file_name, 'r') as dict_file:
+            for entry in dict_file.readlines():
+                password: str = entry.strip()
+                yield password
+
+    except Exception as err:
+        print(f'Error: {err}')
+
+
+def calculate_all_possible_password_combinations(min_pw_len: int, max_pw_len: int, pw_chars: Union[str, list[str]]) -> int:
+    """ calculates the power of the key space """
 
     if not is_valid_input(min_pw_len=min_pw_len, max_pw_len=max_pw_len, pw_chars=pw_chars):
         raise SystemExit('invalid input')
@@ -88,17 +83,19 @@ def calculate_all_possible_password_combinations(min_pw_len: int, max_pw_len: in
 
 if __name__ == '__main__':
     # password generator
-    print(password_creator(pw_len=32, pw_chars=DEFAULT_PW_CHARS), '\n')
+    print('PASSWORD GENERATOR')
+    print(password_creator(pw_len=32, pw_chars=DEFAULT_PW_CHARS))
 
     # generate all possible password combinations
-    my_password_generator = generate_all_password_combinations(min_pw_len=2, max_pw_len=3, pw_chars=DEFAULT_PW_CHARS)
-    for _ in range(10):
-        print(next(my_password_generator))
-
-    """ - OR. - 
-    for pw in generate_all_password_combinations(min_pw_len=2, max_pw_len=3, pw_chars='abcde'):
+    print('GENERATE ALL POSSIBLE PASSWORD COMBINATIONS')
+    for pw in generate_all_password_combinations(min_pw_len=2, max_pw_len=3, pw_chars='abc'):
         print(pw)
-    """
+
+    # loop over every password in a password dictionary file
+    print('LOOP OVER EVERY PASSWORD IN A DICTIONARY FILE')
+    for pw in dictionary_attack('rockyou.txt'):
+        print(pw)
 
     # calculate all possible password combinations for the given charset and the given range
-    print('\n', calculate_all_possible_password_combinations(min_pw_len=2, max_pw_len=5, pw_chars='abc'))
+    print('CALCULATE POWER OF KEY SPACE')
+    print(calculate_all_possible_password_combinations(min_pw_len=2, max_pw_len=5, pw_chars='abc'))
