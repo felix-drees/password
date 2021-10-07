@@ -48,10 +48,7 @@ def password_creator(pw_len: int = 40, pw_chars: Union[str, list[str]] = DEFAULT
     if not is_valid_input(min_pw_len=pw_len, max_pw_len=pw_len, pw_chars=pw_chars):
         raise SystemExit('invalid input')
 
-    try:
-        return ''.join(secrets.SystemRandom.choice(pw_chars) for _ in range(pw_len))
-    except Exception:
-        return ''.join(secrets.choice(pw_chars) for _ in range(pw_len))
+    return ''.join(secrets.SystemRandom(None).choice(pw_chars) for _ in range(pw_len))
 
 
 def generate_all_password_combinations(min_pw_len: int = 4, max_pw_len: int = 5, pw_chars: Union[str, list[str]] = DEFAULT_PW_CHARS) -> str:
