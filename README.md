@@ -1,7 +1,18 @@
 # password
 password creator and brute forcer
 
+---
 
+## how can I contribute to the project?
+>just add a new set of characters in `main.py`
+>
+>for example:
+>```diff
+>+ from string import ascii_letters
+>+ german_char_set = ascii_letters + 'äöüßÄÖÜ'
+>```
+
+---
 
 - Let `l_min` and `l_max` be the minimum and maximum password lengths.
 (`l_min` <= `l_max`)
@@ -12,3 +23,6 @@ Elements of the `UTF-8` code may not be supported on some websites. However, any
 <p align="center">
   <img src="img_2.jpg" alt="plot" width="450"/>
 </p>
+
+
+
