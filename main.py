@@ -81,7 +81,7 @@ def calculate_all_possible_password_combinations(min_pw_len: int, max_pw_len: in
     return sum([pow(len(pw_chars), k) for k in range(min_pw_len, max_pw_len)])
 
 
-if __name__ == '__main__':
+def main() -> None:
     # password generator
     print('PASSWORD GENERATOR')
     print(password_creator(pw_len=32, pw_chars=DEFAULT_PW_CHARS))
@@ -99,3 +99,7 @@ if __name__ == '__main__':
     # calculate all possible password combinations for the given charset and the given range
     print('CALCULATE POWER OF KEY SPACE')
     print(calculate_all_possible_password_combinations(min_pw_len=2, max_pw_len=5, pw_chars='abc'))
+
+
+if __name__ == '__main__':
+    main()    
